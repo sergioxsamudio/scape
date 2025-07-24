@@ -1,0 +1,74 @@
+<div class="bg-white p-6 rounded-lg shadow-md max-w-2xl mx-auto space-y-6">
+  <!-- 🧩 Pistas -->
+  <div>
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">🧩 Pistas</h3>
+    <% pistas = [@sala.pista1, @sala.pista2, @sala.pista3].reject(&:blank?) %>
+
+    <% if pistas.any? %>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <% pistas.each do |pista| %>
+          <li><%= pista %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500 italic">No hay pistas registradas.</p>
+    <% end %>
+  </div>
+
+  <!-- ✔️ Respuestas -->
+  <div>
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">✔️ Respuestas</h3>
+    <% respuestas = [@sala.respuesta1, @sala.respuesta2, @sala.respuesta3].reject(&:blank?) %>
+
+    <% if respuestas.any? %>
+      <ul class="list-disc list-inside text-gray-700 space-y-1">
+        <% respuestas.each do |respuesta| %>
+          <li><%= respuesta %></li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-gray-500 italic">No hay respuestas registradas.</p>
+    <% end %>
+  </div>
+
+  <!-- ⏱ Tiempo máximo -->
+  <div>
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">⏱ Tiempo máximo</h3>
+    <p class="text-gray-700"><%= @sala.tiempo %> segundos</p>
+  </div>
+
+  <!-- 📷 Imagen -->
+  <div>
+    <h3 class="text-xl font-semibold text-gray-800 mb-2">📷 Imagen</h3>
+    <% if @sala.imagen.attached? %>
+      <div class="mt-2">
+        <% begin %>
+          <%= image_tag @sala.imagen, 
+              class: "rounded-lg shadow-md border border-gray-200 max-w-full h-auto", 
+              loading: "lazy",
+              onerror: "this.onerror=null;this.src='#';this.parentElement.innerHTML='<div class=\\'p-4 bg-red-50 text-red-600 rounded border border-red-200\\'><p class=\\'font-medium\\'>Error al cargar la imagen</p></div>'" %>
+        <% rescue => e %>
+          <div class="p-4 bg-red-50 text-red-600 rounded border border-red-200">
+            <p class="font-medium">Error al procesar la imagen</p>
+            <p class="text-sm mt-1"><%= e.message %></p>
+          </div>
+        <% end %>
+      </div>
+      <div class="mt-2">
+        <%= link_to "Descargar imagen", rails_blob_path(@sala.imagen, disposition: "attachment"), 
+                    class: "text-sm text-blue-600 hover:text-blue-800 hover:underline" %>
+      </div>
+    <% else %>
+      <div class="flex items-center justify-center p-8 bg-gray-50 rounded-lg border-2 border-dashed border-gray-300 text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span class="ml-2">No hay imagen subida</span>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+
+

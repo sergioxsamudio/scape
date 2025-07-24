@@ -1,0 +1,14 @@
+<div class="min-h-screen flex flex-col items-center justify-center bg-black text-white p-6">
+  <% if @resultado == "win" %>
+    <h1 class="text-5xl font-extrabold text-green-400 mb-6">🎉 ¡Has escapado!</h1>
+    <p class="text-lg mb-8 text-gray-300">¡Felicidades <%= @usuario.nombre %>! Completaste el escape room.</p>
+  <% else %>
+    <h1 class="text-5xl font-extrabold text-red-500 mb-6">💀 ¡Juego terminado!</h1>
+    <p class="text-lg mb-8 text-gray-300">Lo sentimos <%= @usuario.nombre %>, no lograste escapar a tiempo.</p>
+  <% end %>
+
+  <%= link_to "Volver a los juegos", juegos_path, 
+        class: "px-6 py-3 rounded-lg shadow text-white transition transform hover:scale-105",
+        style: "background-color: #{@juego.color_botones};" %>
+</div>
+

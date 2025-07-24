@@ -1,0 +1,42 @@
+<% content_for :title, "Editar Juego" %>
+
+<div class="min-h-screen flex items-center justify-center bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+  <div class="bg-white p-8 sm:p-10 rounded-xl shadow-xl w-full max-w-3xl">
+    <div class="flex justify-between items-center mb-8">
+      <h1 class="text-3xl font-bold text-gray-800 flex items-center gap-2">
+        ✏️ Editar Juego
+      </h1>
+      <div class="flex flex-wrap gap-2">
+        <!-- Botón Ver juego -->
+        <%= link_to @juego, class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm7.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Ver juego
+        <% end %>
+
+        <!-- Botón Ver salas relacionadas -->
+        <%= link_to salas_path(juego_id: @juego.id), class: "inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
+          </svg>
+          Ver salas
+        <% end %>
+
+        <!-- Botón Volver a juegos -->
+        <%= link_to juegos_path, class: "inline-flex items-center px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 text-sm font-medium rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400" do %>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+          </svg>
+          Volver a juegos
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Formulario -->
+    <div class="mt-6">
+      <%= render "form", juego: @juego %>
+    </div>
+  </div>
+</div>
+

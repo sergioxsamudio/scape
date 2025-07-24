@@ -1,0 +1,17 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  respuesta1: MyString
+  respuesta2: MyString
+  respuesta3: MyString
+  imagen: MyString
+  tiempo: 1
+  juego: one
+
+two:
+  respuesta1: MyString
+  respuesta2: MyString
+  respuesta3: MyString
+  imagen: MyString
+  tiempo: 1
+  juego: two

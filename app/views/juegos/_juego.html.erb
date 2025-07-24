@@ -1,0 +1,23 @@
+<div id="<%= dom_id juego %>" class="max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+  <div class="mb-4">
+    <% if juego.logo.attached? %>
+      <div class="mb-2">
+        <strong class="block text-gray-700 text-sm font-bold mb-1">Logo:</strong>
+        <%= image_tag juego.logo, class: "h-32 object-contain" %>
+      </div>
+    <% end %>
+
+    <div class="mb-2">
+      <strong class="block text-gray-700 text-sm font-bold mb-1">Título:</strong>
+      <p class="text-gray-800"><%= juego.titulo %></p>
+    </div>
+
+    <div class="mb-2">
+      <strong class="block text-gray-700 text-sm font-bold mb-1">Color botones:</strong>
+      <div class="flex items-center">
+        <span class="inline-block w-6 h-6 rounded-full mr-2" style="background-color: <%= juego.color_botones %>"></span>
+        <span class="text-gray-800"><%= juego.color_botones %></span>
+      </div>
+    </div>
+  </div>
+</div>

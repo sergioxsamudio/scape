@@ -1,0 +1,122 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100 py-10 px-4 sm:px-6 lg:px-8">
+  <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-2xl">
+    <h2 class="text-3xl font-bold mb-6 text-center text-gray-800">
+      Crear / Editar Sala
+    </h2>
+
+    <% if sala.errors.any? %>
+      <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+        <h3 class="font-semibold">
+          <%= pluralize(sala.errors.count, "error") %> impidieron guardar la sala:
+        </h3>
+        <ul class="list-disc pl-5 mt-2">
+          <% sala.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <%= form_with(model: sala, local: true, html: { multipart: true, id: "salaForm", class: "space-y-6" }) do |form| %>
+
+      <% if sala.juego_id.present? %>
+        <p class="mb-4 text-sm text-gray-500">
+          <strong>Juego relacionado:</strong> <%= sala.juego.titulo %>
+        </p>
+        <%= form.hidden_field :juego_id %>
+      <% end %>
+
+      <!-- 📝 Pistas -->
+      <div class="grid grid-cols-1 gap-4">
+        <h3 class="text-xl font-semibold text-gray-700">Pistas</h3>
+        <% (1..3).each do |n| %>
+          <div>
+            <%= form.label "pista#{n}", "Pista #{n}", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field "pista#{n}", placeholder: "Escribe la pista #{n}", class: "mt-1 block w-full px-3 py-2 border rounded shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- 📝 Respuestas -->
+      <div class="grid grid-cols-1 gap-4">
+        <h3 class="text-xl font-semibold text-gray-700">Respuestas posibles</h3>
+        <% (1..3).each do |n| %>
+          <div>
+            <%= form.label "respuesta#{n}", "Respuesta #{n}", class: "block text-sm font-medium text-gray-700" %>
+            <%= form.text_field "respuesta#{n}", placeholder: "Escribe la respuesta #{n}", class: "mt-1 block w-full px-3 py-2 border rounded shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+          </div>
+        <% end %>
+      </div>
+
+      <!-- ⏱ Tiempo -->
+      <div>
+        <%= form.label :tiempo, "Tiempo máximo (segundos)", class: "block text-sm font-medium text-gray-700" %>
+        <%= form.number_field :tiempo, placeholder: "Ej: 60", class: "mt-1 block w-full px-3 py-2 border rounded shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" %>
+      </div>
+
+      <!-- 📷 Imagen -->
+      <div>
+        <%= form.label :imagen, "Imagen de la sala", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <div class="flex items-center space-x-4">
+          <label class="cursor-pointer inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h18M3 12h18M3 17h18" />
+            </svg>
+            Seleccionar imagen
+            <%= form.file_field :imagen, class: "hidden", accept: "image/*", id: "imagenInput" %>
+          </label>
+          <span id="imagenNombre" class="text-gray-500 text-sm">Ningún archivo seleccionado</span>
+        </div>
+        <div class="mt-4">
+          <img id="previewImagen" src="#" alt="Preview de la imagen" class="hidden w-full max-h-64 rounded-lg shadow border">
+        </div>
+      </div>
+
+      <!-- ✅ Botón guardar -->
+      <div>
+        <%= form.submit "Guardar Sala", class: "w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500" %>
+      </div>
+
+    <% end %>
+  </div>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const input = document.getElementById("imagenInput");
+    const preview = document.getElementById("previewImagen");
+    const fileName = document.getElementById("imagenNombre");
+
+    input.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        fileName.textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          preview.src = e.target.result;
+          preview.classList.remove("hidden");
+        }
+        reader.readAsDataURL(file);
+      } else {
+        fileName.textContent = "Ningún archivo seleccionado";
+        preview.src = "#";
+        preview.classList.add("hidden");
+      }
+    });
+
+    const form = document.getElementById("salaForm");
+    form.addEventListener("submit", (e) => {
+      const campos = ["pista1", "pista2", "pista3", "respuesta1", "respuesta2", "respuesta3"];
+      const filled = campos.some(id => {
+        const field = form.querySelector(`#sala_${id}`);
+        return field && field.value.trim() !== "";
+      });
+      if (!filled) {
+        e.preventDefault();
+        alert("Debes ingresar al menos una pista o respuesta.");
+      }
+    });
+  });
+</script>
+
+

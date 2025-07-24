@@ -1,0 +1,72 @@
+<%= form_with(model: juego, local: true, html: { multipart: true, class: "max-w-md mx-auto mt-8 p-6 bg-white rounded-lg shadow-md" }) do |form| %>
+  <% if juego.errors.any? %>
+    <div id="error_explanation" class="mb-4 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+      <h2 class="font-bold"><%= pluralize(juego.errors.count, "error") %> prohibited this juego from being saved:</h2>
+      <ul class="mt-2 list-disc list-inside">
+        <% juego.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :titulo, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.text_field :titulo, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :color_botones, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <div class="flex items-center space-x-4">
+      <div class="relative">
+        <%= form.text_field :color_botones, id: "color-value", class: "shadow appearance-none border rounded w-32 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent", placeholder: "#HEX o nombre" %>
+      </div>
+      <div class="relative">
+        <input type="color" id="color-picker" value="#6366f1" class="w-10 h-10 cursor-pointer" oninput="document.getElementById('color-value').value = this.value">
+        <label for="color-picker" class="absolute inset-0 cursor-pointer"></label>
+      </div>
+      <div id="color-preview" class="w-8 h-8 rounded border border-gray-300" style="background-color: <%= juego.color_botones.presence || '#6366f1' %>"></div>
+    </div>
+  </div>
+
+  <div class="mb-6">
+    <%= form.label :logo, class: "block text-gray-700 text-sm font-bold mb-2" %>
+    <%= form.file_field :logo, class: "block w-full text-sm text-gray-500
+      file:mr-4 file:py-2 file:px-4
+      file:rounded-md file:border-0
+      file:text-sm file:font-semibold
+      file:bg-indigo-50 file:text-indigo-700
+      hover:file:bg-indigo-100" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit class: "w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors" %>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const colorValue = document.getElementById('color-value');
+      const colorPicker = document.getElementById('color-picker');
+      const colorPreview = document.getElementById('color-preview');
+
+      // Sincronizar los campos
+      colorValue.addEventListener('input', function() {
+        if (this.value.match(/^#[0-9A-F]{6}$/i)) {
+          colorPicker.value = this.value;
+          colorPreview.style.backgroundColor = this.value;
+        }
+      });
+
+      colorPicker.addEventListener('input', function() {
+        colorValue.value = this.value;
+        colorPreview.style.backgroundColor = this.value;
+      });
+
+      // Inicializar con el valor existente si lo hay
+      if (colorValue.value) {
+        colorPicker.value = colorValue.value;
+        colorPreview.style.backgroundColor = colorValue.value;
+      }
+    });
+  </script>
+<% end %>
